@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaTix — Wizarding Realm Ticketing & Halls</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <header class="wizard-header">
+        <div class="header-banner">
+            <div class="brand-container" onclick="UI.switchView('events')">
+                <div class="hogwarts-crest">⚡</div>
+                <div class="brand-text">
+                    <h1>NOVATIX</h1>
+                    <span class="sub-title">WIZARDING EVENT TICKETING & VENUES</span>
+                </div>
+            </div>
+
+            <div class="user-profile-badge">
+                <span id="user-welcome">Welcome, Wandering Wizard</span>
+                <span id="role-tag" class="role-badge guest">Guest</span>
+                <button class="btn-magic-sm" id="auth-btn" onclick="UI.openAuthModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="auth-btn-text">Cast Login</span>
+                </button>
+            </div>
+        </div>
+
+        <nav class="wizard-nav">
+            <ul>
+                <li><a href="#" class="nav-link active" data-view="events" onclick="UI.switchView('events')"><i class="fa-solid fa-scroll"></i> Magical Events</a></li>
+                <li><a href="#" class="nav-link" data-view="venues" onclick="UI.switchView('venues')"><i class="fa-solid fa-castle"></i> Great Venues</a></li>
+                <li id="nav-item-bookings" class="hidden"><a href="#" class="nav-link" data-view="bookings" onclick="UI.switchView('bookings')"><i class="fa-solid fa-ticket"></i> My Passages</a></li>
+                <li id="nav-item-users" class="hidden"><a href="#" class="nav-link" data-view="users" onclick="UI.switchView('users')"><i class="fa-solid fa-users-gear"></i> Wizard Directory</a></li>
+                <li><a href="#" class="nav-link" data-view="system" onclick="UI.switchView('system')"><i class="fa-solid fa-crystal-ball"></i> Ministry Diagnostics</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="wizard-main">
+
+        <section class="hero-realm">
+            <div class="hero-content">
+                <h2>Enchanting Gatherings & Grand Halls</h2>
+                <p>Reserve passage to tournaments, grand balls, and masterclasses across Hogwarts and the magical world.</p>
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <span class="stat-val" id="stat-events-count">--</span>
+                        <span class="stat-lbl">Upcoming Gatherings</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-val" id="stat-venues-count">--</span>
+                        <span class="stat-lbl">Enchanted Venues</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-val" id="stat-status-indicator">Connected</span>
+                        <span class="stat-lbl">Ministry Link</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 1: EVENTS -->
+        <section id="view-events" class="view-section active">
+            <div class="section-header">
+                <h3><i class="fa-solid fa-hat-wizard"></i> Available Magical Events</h3>
+                <div class="section-actions">
+                    <button id="btn-create-event" class="btn-gold hidden" onclick="UI.openEventModal()">
+                        <i class="fa-solid fa-plus"></i> Enchant Event
+                    </button>
+                </div>
+            </div>
+
+            <div id="events-loader" class="spell-loader hidden">
+                <i class="fa-solid fa-wand-sparkles fa-spin"></i> Summoning Scrolls...
+            </div>
+
+            <div id="events-grid" class="cards-grid"></div>
+        </section>
+
+        <!-- VIEW 2: VENUES -->
+        <section id="view-venues" class="view-section">
+            <div class="section-header">
+                <h3><i class="fa-solid fa-place-of-worship"></i> Wizarding Venues & Halls</h3>
+                <div class="section-actions">
+                    <button id="btn-create-venue" class="btn-gold hidden" onclick="UI.openVenueModal()">
+                        <i class="fa-solid fa-plus"></i> Register Venue
+                    </button>
+                </div>
+            </div>
+
+            <div id="venues-loader" class="spell-loader hidden">
+                <i class="fa-solid fa-wand-sparkles fa-spin"></i> Inspecting Venues...
+            </div>
+
+            <div id="venues-grid" class="cards-grid"></div>
+        </section>
+
+        <!-- VIEW 3: BOOKINGS -->
+        <section id="view-bookings" class="view-section">
+            <div class="section-header">
+                <h3><i class="fa-solid fa-box-archive"></i> Booked Passages & Tickets</h3>
+            </div>
+
+            <div id="bookings-loader" class="spell-loader hidden">
+                <i class="fa-solid fa-wand-sparkles fa-spin"></i> Retrieving Scrolls...
+            </div>
+
+            <div class="table-container">
+                <table class="parchment-table">
+                    <thead>
+                        <tr>
+                            <th>Passage #</th>
+                            <th>Wizard Name</th>
+                            <th>Event</th>
+                            <th>Date & Time</th>
+                            <th>Venue</th>
+                            <th>Tickets</th>
+                            <th>Status</th>
+                            <th>Passage Seal (QR)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookings-table-body">
+                        <tr><td colspan="9" class="text-center">No passages recorded.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- VIEW 4: USER DIRECTORY (ADMIN) -->
+        <section id="view-users" class="view-section">
+            <div class="section-header">
+                <h3><i class="fa-solid fa-user-shield"></i> Ministry Wizard Ledger</h3>
+            </div>
+
+            <div id="users-loader" class="spell-loader hidden">
+                <i class="fa-solid fa-wand-sparkles fa-spin"></i> Reading Ledger...
+            </div>
+
+            <div class="table-container">
+                <table class="parchment-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Owl Email</th>
+                            <th>Ministry Role</th>
+                            <th>Registered On</th>
+                            <th>Management</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <tr><td colspan="6" class="text-center">Administrator clearance required.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- VIEW 5: DIAGNOSTICS -->
+        <section id="view-system" class="view-section">
+            <div class="section-header">
+                <h3><i class="fa-solid fa-vial"></i> Ministry API Diagnostics</h3>
+                <button class="btn-magic-sm" onclick="UI.runDiagnostics()"><i class="fa-solid fa-rotate"></i> Re-test Connection</button>
+            </div>
+
+            <div class="diag-grid">
+                <div class="diag-card">
+                    <h4><i class="fa-solid fa-heart-pulse"></i> Public Health Check (`/health`)</h4>
+                    <pre id="diag-health">Connecting...</pre>
+                </div>
+
+                <div class="diag-card">
+                    <h4><i class="fa-solid fa-key"></i> System Status (`/system/status`)</h4>
+                    <pre id="diag-system">Authenticating X-API-Key...</pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: AUTHENTICATION -->
+    <div id="modal-auth" class="modal-overlay hidden">
+        <div class="modal-card parchment-card">
+            <button class="modal-close" onclick="UI.closeAuthModal()">&times;</button>
+            <div class="modal-tabs">
+                <button id="tab-login" class="tab-btn active" onclick="UI.switchAuthTab('login')">Login</button>
+                <button id="tab-register" class="tab-btn" onclick="UI.switchAuthTab('register')">Register Wizard</button>
+            </div>
+
+            <form id="form-login" class="modal-form" onsubmit="Auth.login(document.getElementById('login-email').value, document.getElementById('login-password').value); return false;">
+                <div class="form-group">
+                    <label>Owl Email</label>
+                    <input type="email" id="login-email" required placeholder="amir@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-gold-block"><i class="fa-solid fa-key"></i> Enter Realm</button>
+            </form>
+
+            <form id="form-register" class="modal-form hidden" onsubmit="Auth.register(document.getElementById('reg-name').value, document.getElementById('reg-email').value, document.getElementById('reg-password').value); return false;">
+                <div class="form-group">
+                    <label>Full Wizard Name</label>
+                    <input type="text" id="reg-name" required placeholder="Godric Gryffindor">
+                </div>
+                <div class="form-group">
+                    <label>Owl Email</label>
+                    <input type="email" id="reg-email" required placeholder="godric@hogwarts.edu">
+                </div>
+                <div class="form-group">
+                    <label>Secret Password (8+ chars)</label>
+                    <input type="password" id="reg-password" minlength="8" maxlength="72" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-gold-block"><i class="fa-solid fa-user-plus"></i> Register Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: EVENT FORM -->
+    <div id="modal-event" class="modal-overlay hidden">
+        <div class="modal-card parchment-card wide">
+            <button class="modal-close" onclick="UI.closeEventModal()">&times;</button>
+            <h3 id="event-modal-title"><i class="fa-solid fa-hat-wizard"></i> Enchant an Event</h3>
+            <form id="form-event" onsubmit="App.handleSaveEvent(event)">
+                <input type="hidden" id="event-id">
+                <div class="form-grid">
+                    <div class="form-group span-2">
+                        <label>Event Name</label>
+                        <input type="text" id="event-name" maxlength="150" required placeholder="Triwizard Tournament Opening">
+                    </div>
+                    <div class="form-group">
+                        <label>Venue</label>
+                        <select id="event-venue-id" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Date</label>
+                        <input type="date" id="event-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Time</label>
+                        <input type="time" id="event-time" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Tickets</label>
+                        <input type="number" id="event-total-tickets" min="1" required placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="event-status" required>
+                            <option value="Upcoming">Upcoming</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group span-2">
+                        <label>Description</label>
+                        <textarea id="event-description" rows="3" placeholder="Detail the magical festivities..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="UI.closeEventModal()">Cancel</button>
+                    <button type="submit" class="btn-gold"><i class="fa-solid fa-floppy-disk"></i> Save Event Scroll</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: VENUE FORM -->
+    <div id="modal-venue" class="modal-overlay hidden">
+        <div class="modal-card parchment-card">
+            <button class="modal-close" onclick="UI.closeVenueModal()">&times;</button>
+            <h3 id="venue-modal-title"><i class="fa-solid fa-castle"></i> Register Venue</h3>
+            <form id="form-venue" onsubmit="App.handleSaveVenue(event)">
+                <input type="hidden" id="venue-id">
+                <div class="form-group">
+                    <label>Venue Name</label>
+                    <input type="text" id="venue-name" maxlength="150" required placeholder="Great Hall">
+                </div>
+                <div class="form-group">
+                    <label>Address / Realm</label>
+                    <input type="text" id="venue-address" maxlength="255" required placeholder="Hogwarts Castle, Scotland">
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="venue-capacity" min="1" required placeholder="500">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="venue-description" rows="3" placeholder="Enchanted ceiling, floating candles..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="UI.closeVenueModal()">Cancel</button>
+                    <button type="submit" class="btn-gold"><i class="fa-solid fa-building-circle-check"></i> Save Venue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: BOOKING FORM -->
+    <div id="modal-booking" class="modal-overlay hidden">
+        <div class="modal-card parchment-card">
+            <button class="modal-close" onclick="UI.closeBookingModal()">&times;</button>
+            <h3><i class="fa-solid fa-ticket"></i> Reserve Event Passage</h3>
+            <div id="booking-event-details" class="event-summary-box"></div>
+            <form id="form-booking" onsubmit="App.handleCreateBooking(event)">
+                <input type="hidden" id="booking-event-id">
+                <div class="form-group">
+                    <label>Ticket Quantity</label>
+                    <input type="number" id="booking-quantity" min="1" max="10" value="1" required>
+                </div>
+                <button type="submit" class="btn-gold-block"><i class="fa-solid fa-wand-magic"></i> Confirm Passage Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 5: USER PROFILE FORM -->
+    <div id="modal-user" class="modal-overlay hidden">
+        <div class="modal-card parchment-card">
+            <button class="modal-close" onclick="UI.closeUserModal()">&times;</button>
+            <h3><i class="fa-solid fa-user-pen"></i> Update Wizard Profile</h3>
+            <form id="form-user" onsubmit="App.handleSaveUser(event)">
+                <input type="hidden" id="user-edit-id">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="user-edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="user-edit-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="user-edit-role" required>
+                        <option value="Customer">Customer</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Administrator">Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>New Password (Optional)</label>
+                    <input type="password" id="user-edit-password" placeholder="Leave blank to keep current">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="UI.closeUserModal()">Cancel</button>
+                    <button type="submit" class="btn-gold"><i class="fa-solid fa-check"></i> Update Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 6: QR SEAL -->
+    <div id="modal-qr" class="modal-overlay hidden">
+        <div class="modal-card parchment-card text-center">
+            <button class="modal-close" onclick="UI.closeQrModal()">&times;</button>
+            <h3 id="qr-modal-title"><i class="fa-solid fa-qrcode"></i> Passage Magic Seal</h3>
+            <div id="qr-modal-content" class="qr-display-box"></div>
+            <p class="qr-note">Present this seal at the entrance of the venue for instant admission.</p>
+        </div>
+    </div>
+
+    <!-- MODULAR JS DEPENDENCY INJECTION -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

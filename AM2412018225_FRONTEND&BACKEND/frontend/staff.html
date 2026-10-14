@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090816">
+    <title>Staff Dashboard | NovaTix</title>
+
+    <link rel="stylesheet" href="assets/css/style.css?v=nebula-20261013">
+
+    <style>
+        .staff-intro { padding: 45px 0 25px; }
+        .staff-subtitle { color: #aaa6c8; line-height: 1.7; }
+        .staff-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin: 25px 0;
+        }
+        .staff-stat {
+            padding: 22px;
+            border: 1px solid rgba(167,139,250,.25);
+            border-radius: 16px;
+            background: rgba(30,25,57,.78);
+        }
+        .staff-stat span { color: #aaa6c8; font-size: 13px; }
+        .staff-stat strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 30px;
+        }
+        .staff-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 28px 0 20px;
+        }
+        .staff-tab.active { background: #6d28d9; color: white; }
+        .staff-panel {
+            padding: 24px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(167,139,250,.25);
+            border-radius: 18px;
+            background: rgba(30,25,57,.65);
+        }
+        .staff-panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .staff-form {
+            padding: 22px;
+            margin: 20px 0;
+            border: 1px solid rgba(167,139,250,.25);
+            border-radius: 14px;
+            background: rgba(12,10,30,.65);
+        }
+        .staff-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .staff-form .form-group { min-width: 0; }
+        .staff-form input,
+        .staff-form textarea,
+        .staff-form select {
+            width: 100%;
+        }
+        .staff-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .staff-table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .staff-table th,
+        .staff-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(167,139,250,.16);
+            vertical-align: middle;
+        }
+        .staff-table th {
+            color: #b9a1ff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+        }
+        .staff-table td { font-size: 13px; }
+        .staff-table td:first-child { font-weight: 600; }
+        .staff-row-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .staff-row-actions .btn { white-space: nowrap; }
+        .staff-empty {
+            padding: 30px 15px;
+            color: #aaa6c8;
+            text-align: center;
+        }
+        .staff-message {
+            margin: 20px 0;
+            padding: 14px 16px;
+            border: 1px solid rgba(167,139,250,.3);
+            border-radius: 12px;
+            background: rgba(109,40,217,.12);
+            color: #e9ddff;
+        }
+        .staff-hidden { display: none !important; }
+
+        @media (max-width: 760px) {
+            .staff-stats { grid-template-columns: 1fr; }
+            .staff-panel { padding: 16px; }
+            .staff-form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container navbar">
+            <a href="index.html" class="brand" aria-label="NovaTix home">
+                <span class="brand-mark">✦</span>
+                <span class="brand-name">Nova<span>Tix</span></span>
+            </a>
+
+            <nav class="nav-links" id="staffNav">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="index.html#events">Events</a>
+                <a class="nav-link" href="index.html#venues">Venues</a>
+                <a class="nav-link active" href="staff.html">Management</a>
+            </nav>
+
+            <div class="nav-actions">
+                <span id="staffUserLabel" class="text-muted"></span>
+                <button class="btn btn-primary" id="staffLogout" type="button">
+                    Logout
+                </button>
+                <button
+                    class="mobile-menu-button"
+                    id="staffMobileMenu"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                >☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="staff-intro">
+            <div class="container">
+                <span class="eyebrow">NOVATIX MANAGEMENT</span>
+                <h1>Staff <span class="gradient-text">Dashboard.</span></h1>
+                <p class="staff-subtitle">
+                    Manage events and venues from one place.
+                </p>
+
+                <div id="staffMessage" class="staff-message" hidden></div>
+
+                <div class="staff-stats">
+                    <article class="staff-stat">
+                        <span>Total Events</span>
+                        <strong id="statEvents">—</strong>
+                    </article>
+                    <article class="staff-stat">
+                        <span>Upcoming Events</span>
+                        <strong id="statUpcoming">—</strong>
+                    </article>
+                    <article class="staff-stat">
+                        <span>Total Venues</span>
+                        <strong id="statVenues">—</strong>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="staff-tabs" role="tablist" aria-label="Management sections">
+                <button
+                    class="btn btn-secondary staff-tab active"
+                    id="eventsTab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                >Manage Events</button>
+
+                <button
+                    class="btn btn-secondary staff-tab"
+                    id="venuesTab"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                >Manage Venues</button>
+            </div>
+
+            <!-- EVENTS -->
+            <section class="staff-panel" id="eventsPanel">
+                <div class="staff-panel-heading">
+                    <div>
+                        <h2>Events</h2>
+                        <p class="text-muted">Create, edit and manage events.</p>
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        id="newEventButton"
+                        type="button"
+                    >+ Add Event</button>
+                </div>
+
+                <form class="staff-form staff-hidden" id="eventForm">
+                    <h3 id="eventFormTitle">Create Event</h3>
+                    <input type="hidden" id="eventId">
+
+                    <div class="staff-form-grid">
+                        <div class="form-group">
+                            <label for="eventName">Event Name</label>
+                            <input
+                                class="form-control"
+                                id="eventName"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventVenue">Venue</label>
+                            <select
+                                class="form-control"
+                                id="eventVenue"
+                                required
+                            >
+                                <option value="">Select a venue</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDate">Event Date</label>
+                            <input
+                                class="form-control"
+                                type="date"
+                                id="eventDate"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventTime">Event Time</label>
+                            <input
+                                class="form-control"
+                                type="time"
+                                id="eventTime"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventTotalTickets">Total Tickets</label>
+                            <input
+                                class="form-control"
+                                type="number"
+                                id="eventTotalTickets"
+                                min="1"
+                                step="1"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventStatus">Event Status</label>
+                            <select class="form-control" id="eventStatus" required>
+                                <option value="Upcoming">Upcoming</option>
+                                <option value="Ongoing">Ongoing</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="grid-column:1/-1">
+                            <label for="eventDescription">Description</label>
+                            <textarea
+                                class="form-control"
+                                id="eventDescription"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="staff-row-actions">
+                        <button
+                            class="btn btn-primary"
+                            id="saveEventButton"
+                            type="submit"
+                        >Save Event</button>
+
+                        <button
+                            class="btn btn-secondary"
+                            id="cancelEventEdit"
+                            type="button"
+                        >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="staff-table-wrap">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                                <th>Status</th>
+                                <th>Tickets Left</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsTableBody">
+                            <tr><td colspan="6">Loading events...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- VENUES -->
+            <section class="staff-panel staff-hidden" id="venuesPanel">
+                <div class="staff-panel-heading">
+                    <div>
+                        <h2>Venues</h2>
+                        <p class="text-muted">Maintain your event locations.</p>
+                    </div>
+
+                    <button
+                        class="btn btn-primary"
+                        id="newVenueButton"
+                        type="button"
+                    >+ Add Venue</button>
+                </div>
+
+                <form class="staff-form staff-hidden" id="venueForm">
+                    <h3 id="venueFormTitle">Create Venue</h3>
+                    <input type="hidden" id="venueId">
+
+                    <div class="staff-form-grid">
+                        <div class="form-group">
+                            <label for="venueName">Venue Name</label>
+                            <input
+                                class="form-control"
+                                id="venueName"
+                                maxlength="150"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="venueAddress">Address</label>
+                            <input
+                                class="form-control"
+                                id="venueAddress"
+                                maxlength="255"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="venueCapacity">Capacity</label>
+                            <input
+                                class="form-control"
+                                type="number"
+                                id="venueCapacity"
+                                min="1"
+                                step="1"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="venueDescription">Description</label>
+                            <textarea
+                                class="form-control"
+                                id="venueDescription"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="staff-row-actions">
+                        <button
+                            class="btn btn-primary"
+                            id="saveVenueButton"
+                            type="submit"
+                        >Save Venue</button>
+
+                        <button
+                            class="btn btn-secondary"
+                            id="cancelVenueEdit"
+                            type="button"
+                        >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="staff-table-wrap">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Venue</th>
+                                <th>Address</th>
+                                <th>Capacity</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="venuesTableBody">
+                            <tr><td colspan="5">Loading venues...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© <span id="currentYear">2026</span> NovaTix.</span>
+                <a href="index.html">Back to Homepage →</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/staff.js" defer></script>
+</body>
+</html>

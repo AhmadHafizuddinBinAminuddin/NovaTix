@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090816">
+
+    <title>Account Access | NovaTix</title>
+
+    <link rel="stylesheet" href="assets/css/style.css?v=nebula-20261013">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container navbar">
+            <a href="index.html" class="brand" aria-label="NovaTix home">
+                <span class="brand-mark">
+                    <svg width="25" height="25" viewBox="0 0 40 40"
+                         fill="none" aria-hidden="true">
+                        <path
+                            d="M20 2L24.5 15.5L38 20L24.5 24.5L20 38L15.5 24.5L2 20L15.5 15.5L20 2Z"
+                            fill="currentColor"/>
+                        <circle cx="31" cy="8" r="3" fill="#E9D5FF"/>
+                    </svg>
+                </span>
+                <span class="brand-name">Nova<span>Tix</span></span>
+            </a>
+
+            <a href="index.html" class="btn btn-secondary btn-sm">
+                ← Back to Home
+            </a>
+        </div>
+    </header>
+
+    <main class="auth-layout">
+
+        <section class="auth-visual">
+            <div class="hero-badge">
+                ✦ YOUR NEXT EXPERIENCE STARTS HERE
+            </div>
+
+            <h2>
+                Every great memory starts with
+                <span class="gradient-text">a moment.</span>
+            </h2>
+
+            <p>
+                Discover exciting events, explore unique venues and keep
+                your bookings organised with NovaTix.
+            </p>
+        </section>
+
+        <section class="auth-form-area">
+
+            <div class="form-card" id="loginPanel">
+
+                <span class="eyebrow">WELCOME BACK</span>
+
+                <h1 style="margin-top:12px">Sign in to NovaTix</h1>
+
+                <p>Enter your account details to continue.</p>
+
+                <div id="loginMessage"
+                     class="alert hidden"
+                     role="alert"
+                     aria-live="polite"></div>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+                        <label for="loginEmail">Email address</label>
+
+                        <input
+                            class="form-control"
+                            type="email"
+                            id="loginEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="username"
+                            maxlength="150"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+
+                        <input
+                            class="form-control"
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <button class="btn btn-primary btn-block"
+                            type="submit"
+                            id="loginSubmit">
+                        Sign In →
+                    </button>
+
+                </form>
+
+                <div class="form-switch">
+                    New to NovaTix?
+                    <a href="?mode=register" id="goToRegister">
+                        Create an account
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="form-card hidden" id="registerPanel">
+
+                <span class="eyebrow">JOIN THE EXPERIENCE</span>
+
+                <h1 style="margin-top:12px">Create your account</h1>
+
+                <p>Register as a customer to start booking events.</p>
+
+                <div id="registerMessage"
+                     class="alert hidden"
+                     role="alert"
+                     aria-live="polite"></div>
+
+                <form id="registerForm">
+
+                    <div class="form-group">
+                        <label for="registerName">Full name</label>
+
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="registerName"
+                            name="full_name"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email address</label>
+
+                        <input
+                            class="form-control"
+                            type="email"
+                            id="registerEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            maxlength="150"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+
+                        <input
+                            class="form-control"
+                            type="password"
+                            id="registerPassword"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            maxlength="72"
+                            required
+                        >
+
+                        <span class="form-help">
+                            Use a password with at least 8 characters.
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password</label>
+
+                        <input
+                            class="form-control"
+                            type="password"
+                            id="confirmPassword"
+                            name="confirm_password"
+                            placeholder="Re-enter your password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            maxlength="72"
+                            required
+                        >
+                    </div>
+
+                    <button class="btn btn-primary btn-block"
+                            type="submit"
+                            id="registerSubmit">
+                        Create Account →
+                    </button>
+
+                </form>
+
+                <div class="form-switch">
+                    Already have an account?
+                    <a href="?mode=login" id="goToLogin">
+                        Sign in
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer" style="margin-top:0">
+        <div class="container footer-bottom">
+            <span>© <span id="currentYear">2026</span> NovaTix</span>
+            <span>Discover. Book. Experience.</span>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js" defer></script>
+
+</body>
+</html>

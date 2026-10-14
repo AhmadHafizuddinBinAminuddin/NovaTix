@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090816">
+
+    <title>My Bookings | NovaTix</title>
+    <meta
+        name="description"
+        content="View your NovaTix event bookings and digital QR tickets."
+    >
+
+    <link rel="stylesheet" href="assets/css/style.css?v=nebula-20261013">
+
+    <style>
+        .bookings-intro {
+            padding: 54px 0 30px;
+        }
+
+        .bookings-heading {
+            margin-bottom: 10px;
+        }
+
+        .bookings-subtitle {
+            max-width: 650px;
+            color: var(--text-muted, #aaa6c8);
+            line-height: 1.7;
+        }
+
+        .booking-summary {
+            margin: 24px 0;
+            color: var(--text-muted, #aaa6c8);
+        }
+
+        .bookings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin: 28px 0 60px;
+        }
+
+        .booking-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid rgba(167, 139, 250, 0.24);
+            border-radius: 18px;
+            background: rgba(30, 25, 57, 0.78);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .booking-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 22px 15px;
+        }
+
+        .booking-reference {
+            color: #b9a1ff;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .booking-event-name {
+            margin: 8px 0;
+            font-size: 21px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .booking-card-body {
+            padding: 0 22px 22px;
+        }
+
+        .booking-info {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+            margin: 10px 0 24px;
+        }
+
+        .booking-info-item {
+            min-width: 0;
+        }
+
+        .booking-info-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #a8a1c7;
+            font-size: 12px;
+        }
+
+        .booking-info-value {
+            display: block;
+            color: #f8f7ff;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .booking-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-top: 1px solid rgba(167, 139, 250, 0.18);
+            padding-top: 18px;
+        }
+
+        .booking-notice {
+            margin: 28px 0 60px;
+            padding: 30px;
+            border: 1px solid rgba(167, 139, 250, 0.25);
+            border-radius: 18px;
+            background: rgba(30, 25, 57, 0.65);
+        }
+
+        .booking-notice h2 {
+            margin-bottom: 10px;
+        }
+
+        .booking-notice p {
+            margin-bottom: 20px;
+            color: #b8b2d2;
+            line-height: 1.7;
+        }
+
+        .qr-ticket-image {
+            display: block;
+            width: min(250px, 100%);
+            aspect-ratio: 1;
+            margin: 20px auto;
+            padding: 12px;
+            border-radius: 14px;
+            background: #fff;
+            object-fit: contain;
+        }
+
+        .ticket-modal-content {
+            text-align: center;
+        }
+
+        .ticket-modal-content .ticket-card {
+            text-align: left;
+        }
+
+        .ticket-event-title {
+            margin: 10px 0;
+            font-size: 23px;
+            overflow-wrap: anywhere;
+        }
+
+        .ticket-details {
+            margin: 20px 0;
+        }
+
+        .ticket-details p {
+            margin: 8px 0;
+            color: #d0cbea;
+            line-height: 1.6;
+        }
+
+        .ticket-details strong {
+            color: #fff;
+        }
+
+        .nav-user-label {
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 760px) {
+            .bookings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-card-top {
+                padding: 18px 18px 12px;
+            }
+
+            .booking-card-body {
+                padding: 0 18px 18px;
+            }
+
+            .booking-notice {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .booking-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+
+            .booking-card-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="site-header">
+        <div class="container navbar">
+
+            <a href="index.html" class="brand" aria-label="NovaTix home">
+                <span class="brand-mark">
+                    <svg
+                        width="25"
+                        height="25"
+                        viewBox="0 0 40 40"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M20 2L24.5 15.5L38 20L24.5 24.5L20 38L15.5 24.5L2 20L15.5 15.5L20 2Z"
+                            fill="currentColor"
+                        />
+                        <circle cx="31" cy="8" r="3" fill="#E9D5FF"/>
+                    </svg>
+                </span>
+
+                <span class="brand-name">Nova<span>Tix</span></span>
+            </a>
+
+            <nav
+                class="nav-links"
+                id="bookingsNav"
+                aria-label="Main navigation"
+            >
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="index.html#events">Events</a>
+                <a class="nav-link" href="index.html#venues">Venues</a>
+                <a
+                    class="nav-link active"
+                    id="myBookingsNavLink"
+                    href="bookings.html"
+                >My Bookings</a>
+            </nav>
+
+            <div class="nav-actions">
+                <span
+                    id="navUserLabel"
+                    class="nav-user-label text-muted"
+                    hidden
+                ></span>
+
+                <a
+                    href="auth.html?mode=login"
+                    class="btn btn-ghost desktop-only"
+                    id="loginNavLink"
+                    hidden
+                >Login</a>
+
+                <a
+                    href="auth.html?mode=register"
+                    class="btn btn-primary"
+                    id="registerNavLink"
+                    hidden
+                >Get Started</a>
+
+                <button
+                    class="btn btn-primary"
+                    id="logoutButton"
+                    type="button"
+                    hidden
+                >Logout</button>
+
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                >☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main>
+        <section class="bookings-intro">
+            <div class="container">
+                <span class="eyebrow">YOUR NOVATIX ACCOUNT</span>
+
+                <h1 class="bookings-heading">
+                    My <span class="gradient-text">Bookings.</span>
+                </h1>
+
+                <p class="bookings-subtitle">
+                    All your event reservations in one place.
+                    View booking details and reopen your digital QR tickets
+                    whenever you need them.
+                </p>
+
+                <div
+                    id="bookingSummary"
+                    class="booking-summary"
+                    aria-live="polite"
+                ></div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div
+                    id="bookingsNotice"
+                    class="booking-notice"
+                    hidden
+                    aria-live="polite"
+                ></div>
+
+                <div
+                    id="bookingsGrid"
+                    class="bookings-grid"
+                    aria-live="polite"
+                ></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Ticket modal and toast messages -->
+    <div id="ticketModalRoot"></div>
+
+    <div
+        class="toast-container"
+        id="toastContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>
+                    © <span id="currentYear">2026</span>
+                    NovaTix. All rights reserved.
+                </span>
+
+                <a href="index.html">Back to Events →</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/bookings.js" defer></script>
+</body>
+</html>

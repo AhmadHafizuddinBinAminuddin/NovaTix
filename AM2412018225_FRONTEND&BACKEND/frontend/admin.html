@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090816">
+    <title>Admin Dashboard | NovaTix</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=nebula-20261013">
+
+    <style>
+        .admin-intro { padding: 42px 0 24px; }
+
+        .admin-subtitle, .admin-muted {
+            color: #aaa6c8;
+            line-height: 1.7;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin: 26px 0;
+        }
+
+        .admin-stat {
+            padding: 22px;
+            border: 1px solid rgba(167,139,250,.25);
+            border-radius: 16px;
+            background: rgba(30,25,57,.78);
+        }
+
+        .admin-stat-label { color: #aaa6c8; font-size: 13px; }
+
+        .admin-stat-value {
+            display: block;
+            margin-top: 12px;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .admin-panel {
+            padding: 24px;
+            margin: 24px 0 30px;
+            border: 1px solid rgba(167,139,250,.25);
+            border-radius: 18px;
+            background: rgba(30,25,57,.65);
+        }
+
+        .admin-panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 28px 0 16px;
+        }
+
+        .admin-tab.active {
+            background: #6d28d9;
+            color: white;
+        }
+
+        .admin-section[hidden], .admin-form[hidden],
+        .admin-message[hidden], .admin-modal-root:empty {
+            display: none !important;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .admin-toolbar input, .admin-toolbar select {
+            min-width: 180px;
+        }
+
+        .admin-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            padding: 22px;
+            margin: 20px 0;
+            border: 1px solid rgba(167,139,250,.24);
+            border-radius: 14px;
+            background: rgba(12,10,30,.65);
+        }
+
+        .admin-form h3, .admin-form .form-help,
+        .admin-form .admin-form-actions {
+            grid-column: 1 / -1;
+        }
+
+        .admin-form .form-group { min-width: 0; }
+        .admin-form .form-control { width: 100%; }
+
+        .admin-form-actions, .admin-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .admin-actions .btn { white-space: nowrap; }
+
+        .admin-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            min-width: 780px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(167,139,250,.16);
+            vertical-align: middle;
+        }
+
+        .admin-table th {
+            color: #b9a1ff;
+            font-size: 12px;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+        }
+
+        .admin-table td {
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-table-empty {
+            padding: 30px 15px !important;
+            text-align: center;
+            color: #aaa6c8;
+        }
+
+        .role-badge, .booking-status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border: 1px solid rgba(167,139,250,.3);
+            border-radius: 999px;
+            color: #e9ddff;
+            background: rgba(109,40,217,.16);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .admin-message {
+            padding: 14px 16px;
+            margin: 18px 0;
+            border: 1px solid rgba(167,139,250,.3);
+            border-radius: 12px;
+            color: #e9ddff;
+            background: rgba(109,40,217,.12);
+        }
+
+        .admin-user-label {
+            color: #bdb5d8;
+            font-size: 13px;
+        }
+
+        .admin-results {
+            margin: 4px 0 16px;
+            color: #aaa6c8;
+            font-size: 13px;
+        }
+
+        .admin-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .admin-pagination p {
+            color: #aaa6c8;
+            font-size: 13px;
+        }
+
+        .admin-pagination-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .analytics-card {
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid rgba(167,139,250,.22);
+            border-radius: 15px;
+            background: rgba(12,10,30,.45);
+        }
+
+        .analytics-card h3 { margin-bottom: 18px; }
+
+        .analytics-row { margin: 18px 0; }
+
+        .analytics-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            color: #dcd6f4;
+            font-size: 13px;
+        }
+
+        .analytics-track {
+            height: 9px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(167,139,250,.13);
+        }
+
+        .analytics-bar {
+            height: 100%;
+            min-width: 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #7c3aed, #c084fc);
+            transition: width .25s ease;
+        }
+
+        .analytics-bar.green {
+            background: linear-gradient(90deg, #059669, #6ee7b7);
+        }
+
+        .analytics-bar.orange {
+            background: linear-gradient(90deg, #ea580c, #fdba74);
+        }
+
+        .analytics-bar.blue {
+            background: linear-gradient(90deg, #2563eb, #93c5fd);
+        }
+
+        .qr-image {
+            display: block;
+            width: min(260px, 100%);
+            aspect-ratio: 1;
+            margin: 20px auto;
+            padding: 12px;
+            border-radius: 14px;
+            background: white;
+            object-fit: contain;
+        }
+
+        .ticket-view { text-align: center; }
+
+        .ticket-view .ticket-card { text-align: left; }
+
+        .ticket-detail-lines {
+            margin: 18px 0;
+            line-height: 1.9;
+            color: #dcd6f4;
+            overflow-wrap: anywhere;
+        }
+
+        .ticket-detail-lines strong { color: white; }
+
+        .admin-modal-root .modal { max-height: 90vh; overflow-y: auto; }
+
+        @media (max-width: 850px) {
+            .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 700px) {
+            .admin-panel { padding: 16px; }
+            .analytics-grid { grid-template-columns: 1fr; }
+            .admin-form { grid-template-columns: 1fr; padding: 16px; }
+            .admin-form h3, .admin-form .form-help,
+            .admin-form .admin-form-actions { grid-column: auto; }
+        }
+
+        @media (max-width: 420px) {
+            .admin-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .admin-stat { padding: 15px; }
+            .admin-stat-value { font-size: 25px; }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container navbar">
+            <a href="index.html" class="brand" aria-label="NovaTix home">
+                <span class="brand-mark">✦</span>
+                <span class="brand-name">Nova<span>Tix</span></span>
+            </a>
+
+            <nav class="nav-links" id="adminNav" aria-label="Main navigation">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="staff.html">Events &amp; Venues</a>
+                <a class="nav-link active" href="admin.html">Admin Dashboard</a>
+            </nav>
+
+            <div class="nav-actions">
+                <span id="adminUserLabel" class="admin-user-label"></span>
+
+                <button class="btn btn-primary" id="adminLogout" type="button">
+                    Logout
+                </button>
+
+                <button
+                    class="mobile-menu-button"
+                    id="adminMobileMenu"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                >☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="admin-intro">
+            <div class="container">
+                <span class="eyebrow">SYSTEM ADMINISTRATION</span>
+
+                <h1>Admin <span class="gradient-text">Dashboard.</span></h1>
+
+                <p class="admin-subtitle">
+                    Manage users, review event bookings and monitor NovaTix activity.
+                </p>
+
+                <div
+                    id="adminMessage"
+                    class="admin-message"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <div class="admin-stats">
+                    <article class="admin-stat">
+                        <span class="admin-stat-label">Total Users</span>
+                        <strong class="admin-stat-value" id="totalUsers">—</strong>
+                    </article>
+
+                    <article class="admin-stat">
+                        <span class="admin-stat-label">Total Events</span>
+                        <strong class="admin-stat-value" id="totalEvents">—</strong>
+                    </article>
+
+                    <article class="admin-stat">
+                        <span class="admin-stat-label">Total Venues</span>
+                        <strong class="admin-stat-value" id="totalVenues">—</strong>
+                    </article>
+
+                    <article class="admin-stat">
+                        <span class="admin-stat-label">Total Bookings</span>
+                        <strong class="admin-stat-value" id="totalBookings">—</strong>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+                <button
+                    class="btn btn-secondary admin-tab active"
+                    id="usersTab"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                >Users</button>
+
+                <button
+                    class="btn btn-secondary admin-tab"
+                    id="bookingsTab"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                >Bookings &amp; QR Tickets</button>
+
+                <button
+                    class="btn btn-secondary admin-tab"
+                    id="analyticsTab"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                >Analytics</button>
+            </div>
+
+            <!-- USERS -->
+            <section class="admin-panel admin-section" id="usersSection">
+                <div class="admin-panel-heading">
+                    <div>
+                        <span class="eyebrow">ACCOUNT CONTROL</span>
+                        <h2>Manage Users</h2>
+                        <p class="admin-muted">
+                            View accounts, update details and manage roles.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-secondary" id="refreshUsers" type="button">
+                        ↻ Refresh
+                    </button>
+                </div>
+
+                <div class="admin-toolbar">
+                    <input
+                        class="form-control"
+                        id="userSearch"
+                        type="search"
+                        placeholder="Search name, email or ID..."
+                        aria-label="Search users"
+                    >
+
+                    <select class="form-control" id="roleFilter" aria-label="Filter role">
+                        <option value="all">All Roles</option>
+                        <option value="Customer">Customer</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Administrator">Administrator</option>
+                    </select>
+                </div>
+
+                <form id="userForm" class="admin-form" hidden>
+                    <h3 id="userFormTitle">Edit User</h3>
+                    <input type="hidden" id="editUserId">
+
+                    <div class="form-group">
+                        <label for="editFullName">Full Name</label>
+                        <input class="form-control" id="editFullName" maxlength="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEmail">Email Address</label>
+                        <input class="form-control" type="email" id="editEmail" maxlength="150" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editRole">Account Role</label>
+                        <select class="form-control" id="editRole" required>
+                            <option value="Customer">Customer</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Administrator">Administrator</option>
+                        </select>
+                    </div>
+
+                    <p class="form-help">
+                        Role changes affect account access. You cannot remove
+                        your own Administrator role.
+                    </p>
+
+                    <div class="admin-form-actions">
+                        <button class="btn btn-primary" id="saveUserButton" type="submit">
+                            Save Changes
+                        </button>
+                        <button class="btn btn-secondary" id="cancelUserEdit" type="button">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <p class="admin-results" id="userResults"></p>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Date Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="6" class="admin-table-empty">
+                                    Loading user accounts...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="form-help" style="margin-top:18px">
+                    Deletion may be restricted for accounts associated with bookings.
+                </p>
+            </section>
+
+            <!-- BOOKINGS -->
+            <section class="admin-panel admin-section" id="bookingsSection" hidden>
+                <div class="admin-panel-heading">
+                    <div>
+                        <span class="eyebrow">BOOKING CONTROL</span>
+                        <h2>Manage Bookings</h2>
+                        <p class="admin-muted">
+                            Review customer reservations and reopen digital tickets.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-secondary" id="refreshBookings" type="button">
+                        ↻ Refresh
+                    </button>
+                </div>
+
+                <div class="admin-toolbar">
+                    <input
+                        class="form-control"
+                        id="bookingSearch"
+                        type="search"
+                        placeholder="Search booking ID, customer or event..."
+                        aria-label="Search bookings"
+                    >
+
+                    <select
+                        class="form-control"
+                        id="bookingStatusFilter"
+                        aria-label="Filter booking status"
+                    >
+                        <option value="all">All Booking Statuses</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <p class="admin-results" id="bookingResults"></p>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer</th>
+                                <th>Event</th>
+                                <th>Event Date</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="bookingsTableBody">
+                            <tr>
+                                <td colspan="7" class="admin-table-empty">
+                                    Loading bookings...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="admin-pagination">
+                    <p id="bookingPageInfo">Page 1</p>
+                    <div class="admin-pagination-actions">
+                        <button class="btn btn-secondary btn-sm" id="previousBookings" type="button">
+                            ← Previous
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="nextBookings" type="button">
+                            Next →
+                        </button>
+                    </div>
+                </div>
+
+                <p class="form-help" style="margin-top:18px">
+                    Quantity updates and cancellations remain subject to the API's
+                    booking rules. Viewing a QR code does not validate event entry.
+                </p>
+            </section>
+
+            <!-- ANALYTICS -->
+            <section class="admin-panel admin-section" id="analyticsSection" hidden>
+                <div class="admin-panel-heading">
+                    <div>
+                        <span class="eyebrow">SYSTEM OVERVIEW</span>
+                        <h2>NovaTix Analytics</h2>
+                        <p class="admin-muted">
+                            Account roles, event statuses and booking statuses.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-secondary" id="refreshAnalytics" type="button">
+                        ↻ Refresh Data
+                    </button>
+                </div>
+
+                <div class="analytics-grid">
+                    <article class="analytics-card">
+                        <h3>User Roles</h3>
+                        <div id="userRoleChart"></div>
+                    </article>
+
+                    <article class="analytics-card">
+                        <h3>Booking Statuses</h3>
+                        <div id="bookingStatusChart"></div>
+                    </article>
+
+                    <article class="analytics-card">
+                        <h3>Event Statuses</h3>
+                        <div id="eventStatusChart"></div>
+                    </article>
+
+                    <article class="analytics-card">
+                        <h3>Ticket Inventory</h3>
+                        <div id="ticketInventorySummary"></div>
+                    </article>
+                </div>
+
+                <p class="form-help" style="margin-top:18px">
+                    These summaries are calculated from records returned by the existing API.
+                    No additional analytics data is stored.
+                </p>
+            </section>
+        </section>
+    </main>
+
+    <div class="admin-modal-root" id="adminModalRoot"></div>
+
+    <div
+        class="toast-container"
+        id="toastContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© <span id="currentYear">2026</span> NovaTix.</span>
+                <a href="index.html">Back to Homepage →</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/admin.js" defer></script>
+</body>
+</html>

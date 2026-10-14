@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaTix — Futuristic Event & Venue Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="neon-theme">
+  <!-- Cyber Grid Background Animation -->
+  <div class="cyber-bg">
+    <div class="grid-lines"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="cyber-header">
+    <div class="nav-container">
+      <div class="brand" onclick="app.navigate('home')">
+        <span class="brand-glyph">◈</span>
+        <span class="brand-text">NOVA<span class="highlight">TIX</span></span>
+      </div>
+
+      <nav class="nav-links" id="main-nav">
+        <a href="#" data-page="home" class="nav-item active">Catalog</a>
+        <a href="#" data-page="venues" class="nav-item">Venues</a>
+        <a href="#" data-page="my-bookings" class="nav-item auth-only customer-only">My Tickets</a>
+        <a href="#" data-page="staff-panel" class="nav-item auth-only staff-only admin-only">Management</a>
+        <a href="#" data-page="admin-users" class="nav-item auth-only admin-only">Users</a>
+      </nav>
+
+      <div class="user-action-area" id="user-actions">
+        <!-- Dynamic Auth Buttons Inserted via JS -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Banner -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main Content Area -->
+  <main class="main-content" id="app-viewport">
+    
+    <!-- PAGE 1: PUBLIC / CATALOG (Events) -->
+    <section id="page-home" class="view-page active">
+      <div class="hero-section">
+        <h1 class="glitch-title" data-text="FUTURE EVENTS">FUTURE EVENTS</h1>
+        <p class="hero-subtitle">Secure high-capacity venue access keys and event passes in real-time.</p>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-box">
+          <input type="text" id="event-search" placeholder="Search event by name or keyword..." oninput="app.filterEvents()">
+        </div>
+        <div class="status-box">
+          <select id="event-status-filter" onchange="app.filterEvents()">
+            <option value="ALL">All Statuses</option>
+            <option value="Upcoming" selected>Upcoming</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="events-grid" class="neon-grid">
+        <!-- Event Cards Injected via JavaScript -->
+      </div>
+
+      <div class="pagination-wrapper" id="events-pagination"></div>
+    </section>
+
+    <!-- PAGE 2: VENUES DISPLAY -->
+    <section id="page-venues" class="view-page">
+      <div class="section-header">
+        <h2 class="neon-heading">CYBER VENUES & LOCATIONS</h2>
+        <p class="section-desc">Explore state-of-the-art arenas, galleries, and forums.</p>
+      </div>
+
+      <div id="venues-grid" class="neon-grid">
+        <!-- Venue Cards Injected via JavaScript -->
+      </div>
+
+      <div class="pagination-wrapper" id="venues-pagination"></div>
+    </section>
+
+    <!-- PAGE 3: MY BOOKINGS (Customer View) -->
+    <section id="page-my-bookings" class="view-page auth-only customer-only">
+      <div class="section-header">
+        <h2 class="neon-heading">MY RESERVED PASSES</h2>
+        <p class="section-desc">Manage your event access codes, QR tokens, and ticket quantities.</p>
+      </div>
+
+      <div id="customer-bookings-container" class="table-container">
+        <!-- Bookings Table Injected via JavaScript -->
+      </div>
+
+      <div class="pagination-wrapper" id="customer-bookings-pagination"></div>
+    </section>
+
+    <!-- PAGE 4: STAFF / ADMIN MANAGEMENT PANEL -->
+    <section id="page-staff-panel" class="view-page auth-only staff-only admin-only">
+      <div class="section-header">
+        <h2 class="neon-heading">SYSTEM MANAGEMENT CONSOLE</h2>
+        <p class="section-desc">Control live inventory, add venues, update event specs, and inspect bookings.</p>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="app.switchStaffTab('manage-events')">Events Console</button>
+        <button class="tab-btn" onclick="app.switchStaffTab('manage-venues')">Venues Console</button>
+        <button class="tab-btn" onclick="app.switchStaffTab('manage-bookings')">Global Bookings Ledger</button>
+      </div>
+
+      <!-- Tab: Manage Events -->
+      <div id="tab-manage-events" class="tab-content active">
+        <div class="action-bar">
+          <h3>Active Events Ledger</h3>
+          <button class="cyber-button glow-cyan" onclick="app.openEventModal()">+ Create New Event</button>
+        </div>
+        <div id="staff-events-list" class="table-container"></div>
+      </div>
+
+      <!-- Tab: Manage Venues -->
+      <div id="tab-manage-venues" class="tab-content">
+        <div class="action-bar">
+          <h3>Registered Venues</h3>
+          <button class="cyber-button glow-pink" onclick="app.openVenueModal()">+ Add New Venue</button>
+        </div>
+        <div id="staff-venues-list" class="table-container"></div>
+      </div>
+
+      <!-- Tab: Manage All Bookings -->
+      <div id="tab-manage-bookings" class="tab-content">
+        <div class="action-bar">
+          <h3>All Customer Bookings Monitor</h3>
+        </div>
+        <div id="staff-bookings-list" class="table-container"></div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: ADMIN USER CONTROL -->
+    <section id="page-admin-users" class="view-page auth-only admin-only">
+      <div class="section-header">
+        <h2 class="neon-heading">ADMINISTRATOR USER CONTROL</h2>
+        <p class="section-desc">Full authority to modify accounts, elevate user roles, or wipe users.</p>
+      </div>
+
+      <div class="table-container" id="admin-users-list">
+        <!-- Users Table Injected via JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALS SYSTEM -->
+  
+  <!-- AUTH MODAL (Login / Register) -->
+  <div id="modal-auth" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-auth')"></div>
+    <div class="modal-card">
+      <button class="modal-close" onclick="ui.closeModal('modal-auth')">&times;</button>
+      
+      <div class="auth-tabs">
+        <button id="auth-tab-login" class="auth-tab active" onclick="ui.switchAuthMode('login')">LOGIN</button>
+        <button id="auth-tab-register" class="auth-tab" onclick="ui.switchAuthMode('register')">REGISTER</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form active" onsubmit="app.handleLogin(event)">
+        <div class="form-group">
+          <label for="login-email">ACCESS ID / EMAIL</label>
+          <input type="email" id="login-email" class="cyber-input" required placeholder="user@novatix.io">
+        </div>
+        <div class="form-group">
+          <label for="login-password">SECURITY CLEARANCE / PASSWORD</label>
+          <input type="password" id="login-password" class="cyber-input" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="cyber-button glow-cyan full-width">AUTHENTICATE</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form" onsubmit="app.handleRegister(event)">
+        <div class="form-group">
+          <label for="reg-name">FULL NAME</label>
+          <input type="text" id="reg-name" class="cyber-input" required placeholder="Cyber Citizen">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">REGISTERED EMAIL</label>
+          <input type="email" id="reg-email" class="cyber-input" required placeholder="newuser@novatix.io">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">PASSWORD (MIN 8 CHARS)</label>
+          <input type="password" id="reg-password" class="cyber-input" minlength="8" maxlength="72" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="cyber-button glow-pink full-width">CREATE ACCESS ACCOUNT</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- BOOK EVENT MODAL (Customer) -->
+  <div id="modal-booking" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-booking')"></div>
+    <div class="modal-card">
+      <button class="modal-close" onclick="ui.closeModal('modal-booking')">&times;</button>
+      <h3 class="modal-title">RESERVE EVENT TICKETS</h3>
+      <div id="booking-event-details" class="event-summary-box"></div>
+      
+      <form id="form-create-booking" onsubmit="app.handleCreateBooking(event)">
+        <input type="hidden" id="booking-event-id">
+        <div class="form-group">
+          <label for="booking-ticket-qty">NUMBER OF PASSES</label>
+          <input type="number" id="booking-ticket-qty" class="cyber-input" min="1" value="1" required>
+        </div>
+        <button type="submit" class="cyber-button glow-cyan full-width">CONFIRM & GENERATE TICKET</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- QR TICKET DISPLAY MODAL -->
+  <div id="modal-qr" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-qr')"></div>
+    <div class="modal-card text-center">
+      <button class="modal-close" onclick="ui.closeModal('modal-qr')">&times;</button>
+      <h3 class="modal-title">DIGITAL TICKET TOKEN</h3>
+      <p id="qr-booking-desc" class="modal-subtext"></p>
+      
+      <div class="qr-container">
+        <img id="qr-code-img" src="" alt="Booking QR Code Token" class="qr-code-image">
+        <div id="qr-fallback" class="qr-error-box hidden">
+          QR Token Server Unavailable or URL missing.
+        </div>
+      </div>
+      
+      <div class="ticket-status-badge confirmed">STATUS: CONFIRMED</div>
+      <button class="cyber-button glow-pink" onclick="ui.closeModal('modal-qr')">CLOSE TOKEN</button>
+    </div>
+  </div>
+
+  <!-- CREATE/EDIT EVENT MODAL (Staff/Admin) -->
+  <div id="modal-event-form" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-event-form')"></div>
+    <div class="modal-card">
+      <button class="modal-close" onclick="ui.closeModal('modal-event-form')">&times;</button>
+      <h3 id="modal-event-title" class="modal-title">CREATE EVENT</h3>
+      
+      <form id="form-event" onsubmit="app.handleSaveEvent(event)">
+        <input type="hidden" id="event-id">
+        <div class="form-group">
+          <label for="event-name">EVENT TITLE</label>
+          <input type="text" id="event-name" class="cyber-input" required maxlength="150">
+        </div>
+        <div class="form-group">
+          <label for="event-venue-id">LOCATION VENUE</label>
+          <select id="event-venue-id" class="cyber-input" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="event-date">EVENT DATE</label>
+            <input type="date" id="event-date" class="cyber-input" required>
+          </div>
+          <div class="form-group half">
+            <label for="event-time">TIME (HH:MM)</label>
+            <input type="time" id="event-time" class="cyber-input" step="1" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="event-tickets">TOTAL TICKETS</label>
+            <input type="number" id="event-tickets" class="cyber-input" min="1" required>
+          </div>
+          <div class="form-group half">
+            <label for="event-status">STATUS</label>
+            <select id="event-status" class="cyber-input">
+              <option value="Upcoming">Upcoming</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="event-description">DESCRIPTION</label>
+          <textarea id="event-description" class="cyber-input" rows="3"></textarea>
+        </div>
+        <button type="submit" class="cyber-button glow-cyan full-width">SAVE EVENT DATA</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE/EDIT VENUE MODAL (Staff/Admin) -->
+  <div id="modal-venue-form" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-venue-form')"></div>
+    <div class="modal-card">
+      <button class="modal-close" onclick="ui.closeModal('modal-venue-form')">&times;</button>
+      <h3 id="modal-venue-title" class="modal-title">CREATE VENUE</h3>
+      
+      <form id="form-venue" onsubmit="app.handleSaveVenue(event)">
+        <input type="hidden" id="venue-id">
+        <div class="form-group">
+          <label for="venue-name">VENUE NAME</label>
+          <input type="text" id="venue-name" class="cyber-input" required maxlength="150">
+        </div>
+        <div class="form-group">
+          <label for="venue-address">ADDRESS / LOCATION</label>
+          <input type="text" id="venue-address" class="cyber-input" required maxlength="255">
+        </div>
+        <div class="form-group">
+          <label for="venue-capacity">MAX CAPACITY</label>
+          <input type="number" id="venue-capacity" class="cyber-input" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="venue-description">DETAILS / AMENITIES</label>
+          <textarea id="venue-description" class="cyber-input" rows="3"></textarea>
+        </div>
+        <button type="submit" class="cyber-button glow-pink full-width">SAVE VENUE DATA</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT USER MODAL (Admin) -->
+  <div id="modal-user-form" class="cyber-modal">
+    <div class="modal-overlay" onclick="ui.closeModal('modal-user-form')"></div>
+    <div class="modal-card">
+      <button class="modal-close" onclick="ui.closeModal('modal-user-form')">&times;</button>
+      <h3 class="modal-title">MODIFY ACCOUNT ACCESS</h3>
+      
+      <form id="form-user" onsubmit="app.handleSaveUser(event)">
+        <input type="hidden" id="user-edit-id">
+        <div class="form-group">
+          <label for="user-edit-name">FULL NAME</label>
+          <input type="text" id="user-edit-name" class="cyber-input" required>
+        </div>
+        <div class="form-group">
+          <label for="user-edit-email">EMAIL ADDRESS</label>
+          <input type="email" id="user-edit-email" class="cyber-input" required>
+        </div>
+        <div class="form-group">
+          <label for="user-edit-role">ASSIGNED CLEARANCE ROLE</label>
+          <select id="user-edit-role" class="cyber-input" required>
+            <option value="Customer">Customer</option>
+            <option value="Staff">Staff</option>
+            <option value="Administrator">Administrator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="user-edit-password">RESET PASSWORD (OPTIONAL)</label>
+          <input type="password" id="user-edit-password" class="cyber-input" placeholder="Leave blank to preserve current">
+        </div>
+        <button type="submit" class="cyber-button glow-cyan full-width">UPDATE USER CLEARANCE</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

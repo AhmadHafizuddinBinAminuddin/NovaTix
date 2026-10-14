@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaTix - Secure Access Node</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Montserrat', 'sans-serif'], }, colors: { blackbg: '#050505', panel: '#0A0A0A', neongold: '#FFD700', } } } }
+    </script>
+</head>
+<body class="text-gray-300 font-sans h-screen flex items-center justify-center p-4 relative">
+    
+    <div class="fixed inset-0 z-[-1]">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" style="background-image: url('novatix-bg.jpg');"></div>
+        <div class="absolute inset-0 bg-black/85"></div>
+    </div>
+
+    <div class="w-full max-w-md bg-panel/60 backdrop-blur-xl rounded-3xl border border-zinc-800/60 p-8 shadow-[0_0_30px_rgba(255,215,0,0.05)] relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-neongold opacity-10 rounded-full blur-3xl"></div>
+
+        <div class="text-center mb-6 relative z-10">
+            <i class="fas fa-bolt text-neongold text-3xl drop-shadow-[0_0_8px_rgba(255,215,0,0.8)] mb-2"></i>
+            <h1 class="text-3xl font-display font-extrabold text-white tracking-widest uppercase mb-1">
+                NOVA<span class="text-neongold drop-shadow-[0_0_8px_rgba(255,215,0,0.8)]">TIX</span>
+            </h1>
+            <p class="text-neongold text-xs font-bold tracking-[0.2em] uppercase">Secure Access Node</p>
+        </div>
+
+        <!-- Toggle Switch -->
+        <div class="flex bg-black/50 rounded-full p-1 mb-8 border border-zinc-700/80 relative z-10">
+            <button id="btn-login-toggle" onclick="toggleForm('login')" class="flex-1 py-2.5 rounded-full bg-neongold text-black font-display text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-[0_0_10px_rgba(255,215,0,0.4)]">
+                LOGIN
+            </button>
+            <button id="btn-register-toggle" onclick="toggleForm('register')" class="flex-1 py-2.5 rounded-full text-zinc-400 hover:text-white font-display text-xs font-bold tracking-widest uppercase transition-all duration-300">
+                REGISTER
+            </button>
+        </div>
+
+        <div id="message-box" class="hidden text-sm font-display tracking-widest uppercase p-3 rounded-lg text-center border relative z-10 mb-4"></div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="space-y-5 relative z-10 block">
+            <div>
+                <label class="block text-xs font-display tracking-widest text-zinc-400 uppercase mb-2">Secure Email</label>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                    <input type="email" id="login-email" required class="w-full bg-black/50 border border-zinc-700/80 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-neongold focus:shadow-[0_0_10px_rgba(255,215,0,0.2)] transition duration-300">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-display tracking-widest text-zinc-400 uppercase mb-2">Access Key (Password)</label>
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                    <input type="password" id="login-password" required class="w-full bg-black/50 border border-zinc-700/80 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-neongold focus:shadow-[0_0_10px_rgba(255,215,0,0.2)] transition duration-300">
+                </div>
+            </div>
+            <button type="submit" class="w-full mt-4 border border-neongold bg-neongold/10 text-neongold hover:bg-neongold hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition duration-300 rounded-xl py-4 font-display text-xs font-bold tracking-widest uppercase">
+                Initialize Link
+            </button>
+        </form>
+
+        <!-- REGISTER FORM (Hidden by default) -->
+        <form id="register-form" class="space-y-5 relative z-10 hidden">
+            <div>
+                <label class="block text-xs font-display tracking-widest text-zinc-400 uppercase mb-2">Full Name</label>
+                <div class="relative">
+                    <i class="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                    <input type="text" id="reg-fullname" required class="w-full bg-black/50 border border-zinc-700/80 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-neongold focus:shadow-[0_0_10px_rgba(255,215,0,0.2)] transition duration-300">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-display tracking-widest text-zinc-400 uppercase mb-2">Secure Email</label>
+                <div class="relative">
+                    <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                    <input type="email" id="reg-email" required class="w-full bg-black/50 border border-zinc-700/80 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-neongold focus:shadow-[0_0_10px_rgba(255,215,0,0.2)] transition duration-300">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-display tracking-widest text-zinc-400 uppercase mb-2">Access Key</label>
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                    <input type="password" id="reg-password" required class="w-full bg-black/50 border border-zinc-700/80 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-neongold focus:shadow-[0_0_10px_rgba(255,215,0,0.2)] transition duration-300">
+                </div>
+            </div>
+            <button type="submit" class="w-full mt-4 border border-neongold bg-neongold/10 text-neongold hover:bg-neongold hover:text-black hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] transition duration-300 rounded-xl py-4 font-display text-xs font-bold tracking-widest uppercase">
+                Create Profile
+            </button>
+        </form>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

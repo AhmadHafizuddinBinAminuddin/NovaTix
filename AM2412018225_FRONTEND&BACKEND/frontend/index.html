@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090816">
+    <title>NovaTix | Your Next Experience Starts Here</title>
+    <meta
+        name="description"
+        content="Discover upcoming events, explore venues and book your next experience with NovaTix."
+    >
+    <link rel="stylesheet" href="assets/css/style.css?v=nebula-20261013">
+</head>
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="site-header">
+        <div class="container navbar">
+            <a href="#home" class="brand" aria-label="NovaTix home">
+                <span class="brand-mark">
+                    <svg
+                        width="25"
+                        height="25"
+                        viewBox="0 0 40 40"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M20 2L24.5 15.5L38 20L24.5 24.5L20 38L15.5 24.5L2 20L15.5 15.5L20 2Z"
+                            fill="currentColor"
+                        />
+                        <circle cx="31" cy="8" r="3" fill="#E9D5FF"/>
+                    </svg>
+                </span>
+                <span class="brand-name">Nova<span>Tix</span></span>
+            </a>
+
+            <nav
+                class="nav-links"
+                id="primaryNav"
+                aria-label="Main navigation"
+            >
+                <a class="nav-link active" href="#home">Home</a>
+                <a class="nav-link" href="#events">Events</a>
+                <a class="nav-link" href="#venues">Venues</a>
+                <a class="nav-link" href="#about">About</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Visible when logged out -->
+                <a
+                    href="auth.html?mode=login"
+                    class="btn btn-ghost desktop-only"
+                    id="loginNavLink"
+                >Login</a>
+
+                <a
+                    href="auth.html?mode=register"
+                    class="btn btn-primary"
+                    id="registerNavLink"
+                >Get Started</a>
+
+                <!-- Visible to Staff and Administrator accounts -->
+                <a
+                    href="staff.html"
+                    class="btn btn-secondary hidden"
+                    id="managementButton"
+                    hidden
+                >Staff Dashboard</a>
+
+                <!-- Visible when logged in -->
+                <span
+                    id="navUserLabel"
+                    class="nav-user-label text-muted hidden"
+                    hidden
+                ></span>
+
+                <button
+                    class="btn btn-ghost hidden"
+                    id="myBookingsButton"
+                    type="button"
+                    hidden
+                >My Bookings</button>
+
+                <button
+                    class="btn btn-primary hidden"
+                    id="logoutButton"
+                    type="button"
+                    hidden
+                >Logout</button>
+
+                <!-- Mobile menu -->
+                <button
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-expanded="false"
+                >☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main id="mainContent">
+
+        <!-- HERO SECTION -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span>✦</span>
+                        DISCOVER SOMETHING EXTRAORDINARY
+                    </div>
+
+                    <h1>
+                        Your Events.<br>
+                        Your Moments.<br>
+                        <span class="gradient-text">Your NovaTix.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Discover unforgettable experiences, explore amazing
+                        venues and secure your place at the events that matter
+                        to you.
+                    </p>
+
+                    <form class="search-panel" id="heroSearchForm">
+                        <input
+                            type="search"
+                            id="heroSearchInput"
+                            name="search"
+                            placeholder="Search events, venues or experiences..."
+                            aria-label="Search events and venues"
+                        >
+
+                        <button class="btn btn-primary" type="submit">
+                            <span aria-hidden="true">⌕</span>
+                            Explore Events
+                        </button>
+                    </form>
+
+                    <div class="hero-actions mt-4">
+                        <a href="#events" class="btn btn-primary">
+                            Discover Events
+                            <span aria-hidden="true">→</span>
+                        </a>
+
+                        <a href="#venues" class="btn btn-secondary">
+                            Explore Venues
+                        </a>
+                    </div>
+                </div>
+
+                <aside class="hero-feature-card" aria-label="NovaTix experience preview">
+                    <div class="hero-feature-media">
+                        <img
+                            src="https://cdn2.allevents.in/transup/e3/880c2c3e74476a9021094ef88f8b08/concert.png"
+                            alt="Crowd enjoying a live music performance"
+                            loading="eager"
+                        >
+                    </div>
+                    <div class="hero-feature-content">
+                        <div class="hero-feature-kicker">
+                            <span class="hero-live-dot" aria-hidden="true"></span>
+                            THE NOVATIX EXPERIENCE
+                        </div>
+                        <h2>Find your next <span>big moment.</span></h2>
+                        <p>Live music, bold ideas, new places. Discover experiences that stay with you long after the lights go down.</p>
+                        <div class="hero-feature-footer">
+                            <span class="hero-feature-sigil" aria-hidden="true">✦</span>
+                            <span>DISCOVER · BOOK · EXPERIENCE</span>
+                            <span class="hero-feature-arrow" aria-hidden="true">↗</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+
+
+
+
+        <!-- FEATURES -->
+        <section class="container">
+            <div class="feature-strip">
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">✦</div>
+                    <h3>Discover Events</h3>
+                    <p>Explore upcoming experiences in one place.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">⌖</div>
+                    <h3>Explore Venues</h3>
+                    <p>Find locations for your next experience.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">▣</div>
+                    <h3>Easy Booking</h3>
+                    <p>Submit and manage your event bookings.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">◇</div>
+                    <h3>Digital QR Tickets</h3>
+                    <p>View your booking QR code when available.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- EVENTS SECTION -->
+        <section class="section" id="events">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">FIND YOUR NEXT EXPERIENCE</span>
+                        <h2>
+                            Events worth
+                            <span class="gradient-text">remembering.</span>
+                        </h2>
+                        <p>
+                            Discover events and find your next reason to go out.
+                        </p>
+                    </div>
+
+                    <a
+                        href="#events"
+                        class="btn btn-secondary"
+                        id="viewAllEvents"
+                    >
+                        View All Events →
+                    </a>
+                </div>
+
+                <div
+                    class="filters"
+                    id="eventFilters"
+                    aria-label="Filter events"
+                >
+                    <button
+                        class="filter-chip active"
+                        type="button"
+                        data-event-filter="all"
+                    >All Events</button>
+
+                    <button
+                        class="filter-chip"
+                        type="button"
+                        data-event-filter="Upcoming"
+                    >Upcoming</button>
+
+                    <button
+                        class="filter-chip"
+                        type="button"
+                        data-event-filter="Ongoing"
+                    >Ongoing</button>
+
+                    <button
+                        class="filter-chip"
+                        type="button"
+                        data-event-filter="Completed"
+                    >Completed</button>
+
+                    <button
+                        class="filter-chip"
+                        type="button"
+                        data-event-filter="Cancelled"
+                    >Cancelled</button>
+                </div>
+
+                <div
+                    class="card-grid"
+                    id="eventGrid"
+                    aria-live="polite"
+                >
+                    <div class="loading-state">
+                        Events will appear here when the API is connected.
+                    </div>
+                </div>
+
+                <div
+                    class="pagination"
+                    id="eventPagination"
+                ></div>
+            </div>
+        </section>
+
+        <!-- VENUES SECTION -->
+        <section class="section-sm" id="venues">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">THE PERFECT SETTING</span>
+                        <h2>
+                            Explore our
+                            <span class="gradient-text">venues.</span>
+                        </h2>
+                        <p>
+                            Discover the places where memorable experiences happen.
+                        </p>
+                    </div>
+
+                    <a
+                        href="#venues"
+                        class="btn btn-secondary"
+                        id="viewAllVenues"
+                    >
+                        View Venues →
+                    </a>
+                </div>
+
+                <div
+                    class="card-grid four-column"
+                    id="venueGrid"
+                    aria-live="polite"
+                >
+                    <div class="loading-state">
+                        Venue information will appear here when the API is connected.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT / CALL TO ACTION -->
+        <section class="section" id="about">
+            <div class="container">
+                <div class="panel">
+                    <div
+                        class="panel-content text-center"
+                        style="padding: 48px 24px;"
+                    >
+                        <span class="eyebrow">
+                            YOUR NEXT CHAPTER STARTS HERE
+                        </span>
+
+                        <h2
+                            style="
+                                font-size: clamp(30px, 5vw, 46px);
+                                margin: 14px 0;
+                            "
+                        >
+                            Make room for
+                            <span class="gradient-text">something amazing.</span>
+                        </h2>
+
+                        <p
+                            class="text-muted"
+                            style="max-width: 600px; margin: 0 auto 24px;"
+                        >
+                            Discover events, find your favourite venues and
+                            keep your bookings organised with NovaTix.
+                        </p>
+
+                        <a
+                            href="auth.html?mode=register"
+                            class="btn btn-primary"
+                        >
+                            Join NovaTix
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="#home" class="brand" aria-label="NovaTix home">
+                        <span class="brand-mark">
+                            <svg
+                                width="25"
+                                height="25"
+                                viewBox="0 0 40 40"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M20 2L24.5 15.5L38 20L24.5 24.5L20 38L15.5 24.5L2 20L15.5 15.5L20 2Z"
+                                    fill="currentColor"
+                                />
+                                <circle
+                                    cx="31"
+                                    cy="8"
+                                    r="3"
+                                    fill="#E9D5FF"
+                                />
+                            </svg>
+                        </span>
+
+                        <span class="brand-name">Nova<span>Tix</span></span>
+                    </a>
+
+                    <p class="footer-description">
+                        Your destination for discovering events, exploring
+                        venues and managing bookings.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Explore</h3>
+                    <div class="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#events">Events</a>
+                        <a href="#venues">Venues</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Your Account</h3>
+                    <div class="footer-links">
+                        <a href="auth.html?mode=login">Login</a>
+                        <a href="auth.html?mode=register">Create Account</a>
+                        <a href="bookings.html">My Bookings</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>
+                    © <span id="currentYear">2026</span>
+                    NovaTix. All rights reserved.
+                </span>
+                <span>Discover. Book. Experience.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Feedback and modal containers -->
+    <div
+        class="toast-container"
+        id="toastContainer"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+    <div id="modalRoot"></div>
+
+    <!-- Homepage JavaScript -->
+    <script src="assets/js/app.js?v=nebula-20261013" defer></script>
+</body>
+</html>
