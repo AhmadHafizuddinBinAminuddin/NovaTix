@@ -15,6 +15,7 @@ Currently, this repository is segmented to showcase individual front-end and bac
 * `/AM2412018206_FRONTEND&BACKEND` - Work by Syafi Irfan
 * `/AM2412018225_FRONTEND&BACKEND` - Work by Muhammad Fariz Nazmi
 * `/AM2412018329_FRONT-END&BACKEND` - Work by Muhammad Haiqal
+* `NovaTix backedend only` - collaboration work on Backend files before intergration of front end.
 * `NovaTix_API.postman_collection.json` - Postman collection for testing the PHP backend API routes.
 
 ## 💻 Tech Stack
