@@ -30,3 +30,4 @@ Currently, this repository is segmented to showcase individual front-end and bac
 4. Import any provided `.sql` database files into phpMyAdmin.
 5. Update your database connection files (e.g., `db.php` or `config.php`) with your local database credentials.
 6. Import the `NovaTix_API.postman_collection.json` file into Postman to test the backend endpoints.
+[![GROUP 7- SWC3633-NovaTix (MUHAMMAD FARIZ NAZMI, AHMAD HAFIZUDDIN, SYAFI IRFAN, MUHAMMAD HAIQAL)](https://img.youtube.com/vi/NAgUrFQ6pvw/maxresdefault.jpg)](https://youtu.be/NAgUrFQ6pvw)
